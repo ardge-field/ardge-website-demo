@@ -1,7 +1,7 @@
 # ardge-website-demo
 
 ARDGE demo site 清單，使用 [Docsify](https://docsify.js.org/) 建置，透過 GitHub Pages 發佈。
-配色使用 [Catppuccin for Docsify](https://github.com/catppuccin/docsify)，依系統設定自動切換 Latte（淺色）/ Mocha（深色），強調色為哆啦A夢藍（淺色 `#0072B8`、深色 `#0096E0`）。
+配色使用 [Catppuccin for Docsify](https://github.com/catppuccin/docsify)，預設依系統設定切換 Latte（淺色）/ Mocha（深色），也可用左側目錄下方的「自動 / 淺色 / 深色」按鈕手動切換（記在瀏覽器 localStorage），強調色為哆啦A夢藍（淺色 `#0072B8`、深色 `#0096E0`）。
 
 - 網站：https://ardge-field.github.io/ardge-website-demo/
 - 內容位於 `docs/`，依分類分檔：

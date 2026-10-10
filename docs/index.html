@@ -5,13 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ARDGE Demo Sites</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4.13.1/lib/themes/vue.css">
-  <!-- Catppuccin 配色（鎖定 commit 628ff26）：系統淺色用 Latte，深色用 Mocha；強調色另以哆啦A夢藍覆寫 -->
-  <link rel="stylesheet" media="(prefers-color-scheme: light)" href="https://cdn.jsdelivr.net/gh/catppuccin/docsify@628ff26/themes/latte/blue.css">
-  <link rel="stylesheet" media="(prefers-color-scheme: dark)" href="https://cdn.jsdelivr.net/gh/catppuccin/docsify@628ff26/themes/mocha/blue.css">
+  <!-- Catppuccin 配色（鎖定 commit 628ff26）：淺色用 Latte，深色用 Mocha；強調色另以哆啦A夢藍覆寫 -->
+  <link id="ctp-light" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/catppuccin/docsify@628ff26/themes/latte/blue.css">
+  <link id="ctp-dark" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/catppuccin/docsify@628ff26/themes/mocha/blue.css">
+  <script>
+    // 深淺色：偏好為 auto / light / dark，存在 localStorage；auto 跟隨系統。於 <head> 執行以避免閃爍
+    (function () {
+      var KEY = 'ardge-theme';
+      var mq = window.matchMedia('(prefers-color-scheme: dark)');
+      var getPref = function () {
+        try { var v = localStorage.getItem(KEY); return v === 'light' || v === 'dark' ? v : 'auto'; } catch (e) { return 'auto'; }
+      };
+      var apply = function () {
+        var pref = getPref();
+        var theme = pref === 'auto' ? (mq.matches ? 'dark' : 'light') : pref;
+        var root = document.documentElement;
+        root.setAttribute('data-theme', theme);
+        root.setAttribute('data-theme-pref', pref);
+        document.getElementById('ctp-light').media = theme === 'light' ? 'all' : 'not all';
+        document.getElementById('ctp-dark').media = theme === 'dark' ? 'all' : 'not all';
+        document.querySelectorAll('.theme-switch button').forEach(function (b) {
+          b.setAttribute('aria-pressed', String(b.dataset.pref === pref));
+        });
+      };
+      window.ardgeTheme = {
+        apply: apply,
+        set: function (pref) {
+          try { pref === 'auto' ? localStorage.removeItem(KEY) : localStorage.setItem(KEY, pref); } catch (e) {}
+          apply();
+        }
+      };
+      if (mq.addEventListener) mq.addEventListener('change', apply);
+      apply();
+    })();
+  </script>
   <style>
     /* 哆啦A夢藍：深色用原色 #0096E0；淺色用深一階 #0072B8（對比約 4.5:1） */
-    @media (prefers-color-scheme: light) { :root { --theme-color: #0072B8 !important; } }
-    @media (prefers-color-scheme: dark)  { :root { --theme-color: #0096E0 !important; } }
+    :root[data-theme="light"] { --theme-color: #0072B8 !important; }
+    :root[data-theme="dark"]  { --theme-color: #0096E0 !important; }
     /* 字級加大 */
     body { font-size: 18px; }
     .markdown-section { font-size: 18px; }
@@ -23,8 +54,14 @@
     .search input { font-size: 16px; }
     /* Catppuccin 給 ☰ 按鈕的底色在 vue 版面會拉成長條，改為透明 */
     .sidebar-toggle-button { background-color: transparent !important; }
-    /* 左側目錄下方更新時間 */
-    .sidebar-updated { margin: 1.2em 0 0; padding: 0.8em 15px 0; border-top: 1px solid var(--surface1); color: var(--overlay1); font-size: 15px; }
+    /* 左側目錄下方：更新日期與深淺色切換 */
+    .sidebar-footer { margin: 1.2em 0 0; padding: 0.8em 15px 0; border-top: 1px solid var(--surface1); }
+    .sidebar-updated { color: var(--overlay1); font-size: 15px; }
+    .theme-switch { display: inline-flex; margin-top: 0.8em; border: 1px solid var(--surface1); border-radius: 6px; overflow: hidden; }
+    .theme-switch button { padding: 4px 10px; border: 0; background: transparent; color: var(--subtext0); font: inherit; font-size: 14px; cursor: pointer; }
+    .theme-switch button + button { border-left: 1px solid var(--surface1); }
+    .theme-switch button:hover { color: var(--theme-color); }
+    .theme-switch button[aria-pressed="true"] { background: var(--theme-color); color: var(--base); font-weight: 700; }
   </style>
 </head>
 <body>
@@ -44,16 +81,32 @@
       },
       plugins: [
         function (hook) {
-          // 以 _sidebar.md 的 Last-Modified（網站最後部署時間）顯示於左側目錄下方
+          // 左側目錄下方：更新日期（_sidebar.md 的 Last-Modified，即網站最後部署時間）與深淺色切換
           var updated = null;
           var pad = function (n) { return String(n).padStart(2, '0'); };
           var render = function () {
             var nav = document.querySelector('.sidebar-nav');
-            if (!nav || !updated || nav.querySelector('.sidebar-updated')) return;
-            var el = document.createElement('div');
-            el.className = 'sidebar-updated';
-            el.textContent = '更新日期：' + updated;
-            nav.appendChild(el);
+            if (!nav) return;
+            var footer = nav.querySelector('.sidebar-footer');
+            if (!footer) {
+              footer = document.createElement('div');
+              footer.className = 'sidebar-footer';
+              footer.innerHTML =
+                '<div class="sidebar-updated"></div>' +
+                '<div class="theme-switch" role="group" aria-label="深淺色">' +
+                '<button type="button" data-pref="auto">自動</button>' +
+                '<button type="button" data-pref="light">☀️ 淺色</button>' +
+                '<button type="button" data-pref="dark">🌙 深色</button>' +
+                '</div>';
+              footer.querySelectorAll('.theme-switch button').forEach(function (b) {
+                b.addEventListener('click', function () { window.ardgeTheme.set(b.dataset.pref); });
+              });
+              nav.appendChild(footer);
+              window.ardgeTheme.apply();
+            }
+            var el = footer.querySelector('.sidebar-updated');
+            el.textContent = updated ? '更新日期：' + updated : '';
+            el.hidden = !updated;
           };
           hook.ready(function () {
             fetch('_sidebar.md', { method: 'HEAD', cache: 'no-cache' }).then(function (r) {
