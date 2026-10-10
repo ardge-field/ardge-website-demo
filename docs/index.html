@@ -5,10 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ARDGE Demo Sites</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4.13.1/lib/themes/vue.css">
-  <!-- Catppuccin 配色（鎖定 commit 628ff26）：系統淺色用 Latte，深色用 Mocha -->
-  <link rel="stylesheet" media="(prefers-color-scheme: light)" href="https://cdn.jsdelivr.net/gh/catppuccin/docsify@628ff26/themes/latte/mauve.css">
-  <link rel="stylesheet" media="(prefers-color-scheme: dark)" href="https://cdn.jsdelivr.net/gh/catppuccin/docsify@628ff26/themes/mocha/mauve.css">
+  <!-- Catppuccin 配色（鎖定 commit 628ff26）：系統淺色用 Latte，深色用 Mocha；強調色另以哆啦A夢藍覆寫 -->
+  <link rel="stylesheet" media="(prefers-color-scheme: light)" href="https://cdn.jsdelivr.net/gh/catppuccin/docsify@628ff26/themes/latte/blue.css">
+  <link rel="stylesheet" media="(prefers-color-scheme: dark)" href="https://cdn.jsdelivr.net/gh/catppuccin/docsify@628ff26/themes/mocha/blue.css">
   <style>
+    /* 哆啦A夢藍：深色用原色 #0096E0；淺色用深一階 #0072B8（對比約 4.5:1） */
+    @media (prefers-color-scheme: light) { :root { --theme-color: #0072B8 !important; } }
+    @media (prefers-color-scheme: dark)  { :root { --theme-color: #0096E0 !important; } }
     /* 字級加大 */
     body { font-size: 18px; }
     .markdown-section { font-size: 18px; }
@@ -16,6 +19,7 @@
     .markdown-section h2 { font-size: 28px; }
     .sidebar ul li a { font-size: 17px; }
     .app-name-link { font-size: 24px; }
+    .sidebar > h1 { font-weight: 700; }
     .search input { font-size: 16px; }
     /* Catppuccin 給 ☰ 按鈕的底色在 vue 版面會拉成長條，改為透明 */
     .sidebar-toggle-button { background-color: transparent !important; }
@@ -48,7 +52,7 @@
             if (!nav || !updated || nav.querySelector('.sidebar-updated')) return;
             var el = document.createElement('div');
             el.className = 'sidebar-updated';
-            el.textContent = '最後更新：' + updated;
+            el.textContent = '更新日期：' + updated;
             nav.appendChild(el);
           };
           hook.ready(function () {
