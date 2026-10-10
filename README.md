@@ -32,6 +32,19 @@ ARDGE demo site 清單，使用 [Docsify](https://docsify.js.org/) 建置，透�
 
 左側目錄下方的「更新日期」會自動顯示網站最後一次部署的時間。
 
+## 發佈 Release
+
+推送 `v` 開頭的 tag 時，GitHub Actions（`.github/workflows/release.yml`）會把 `docs/` 打包成 `ardge-website-demo-<版本>.zip`，並建立 Release，附上自動產生的變更清單。
+
+```bash
+git tag v1.1.0
+git push origin v1.1.0
+```
+
+下載：https://github.com/ardge-field/ardge-website-demo/releases
+
+zip 內為網站檔案；Docsify 與主題從 CDN 載入，需連網才能正常顯示。
+
 ## 本機預覽
 
 ```bash
