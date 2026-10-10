@@ -18,6 +18,9 @@ ARDGE demo site 清單，使用 [Docsify](https://docsify.js.org/) 建置，透�
    ## 站台名稱
 
    - URL：https://example.com
+   - 說明：
+     - 附註一
+     - 附註二
    ```
 
 2. 在 `docs/_sidebar.md` 該分類下加一行（`id` 為標題轉小寫、空白換成 `-`）：
@@ -26,7 +29,7 @@ ARDGE demo site 清單，使用 [Docsify](https://docsify.js.org/) 建置，透�
      - [站台名稱](internal.md?id=站台名稱)
    ```
 
-每頁底部的「最後更新」時間會自動顯示網站最後一次部署的時間。
+左側目錄下方的「最後更新」會自動顯示網站最後一次部署的時間。
 
 ## 本機預覽
 

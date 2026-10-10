@@ -14,8 +14,8 @@
     .sidebar ul li a { font-size: 17px; }
     .app-name-link { font-size: 24px; }
     .search input { font-size: 16px; }
-    /* 頁尾更新時間 */
-    .page-updated { margin-top: 3em; padding-top: 1em; border-top: 1px solid #eee; color: #888; font-size: 15px; }
+    /* 左側目錄下方更新時間 */
+    .sidebar-updated { margin: 1.2em 0 0; padding: 0.8em 15px 0; border-top: 1px solid #eee; color: #888; font-size: 15px; }
   </style>
 </head>
 <body>
@@ -28,7 +28,6 @@
       subMaxLevel: 0,
       auto2top: true,
       externalLinkTarget: '_blank',
-      formatUpdated: '{YYYY}-{MM}-{DD} {HH}:{mm}',
       search: {
         placeholder: '搜尋',
         noData: '找不到結果',
@@ -36,9 +35,27 @@
       },
       plugins: [
         function (hook) {
-          hook.beforeEach(function (content) {
-            return content + '\n\n<div class="page-updated">最後更新：{docsify-updated}</div>\n';
+          // 以 _sidebar.md 的 Last-Modified（網站最後部署時間）顯示於左側目錄下方
+          var updated = null;
+          var pad = function (n) { return String(n).padStart(2, '0'); };
+          var render = function () {
+            var nav = document.querySelector('.sidebar-nav');
+            if (!nav || !updated || nav.querySelector('.sidebar-updated')) return;
+            var el = document.createElement('div');
+            el.className = 'sidebar-updated';
+            el.textContent = '最後更新：' + updated;
+            nav.appendChild(el);
+          };
+          hook.ready(function () {
+            fetch('_sidebar.md', { method: 'HEAD', cache: 'no-cache' }).then(function (r) {
+              var d = new Date(r.headers.get('Last-Modified'));
+              if (isNaN(d)) return;
+              updated = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) +
+                ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+              render();
+            });
           });
+          hook.doneEach(render);
         }
       ]
     };
