@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ARDGE Demo Sites</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4.13.1/lib/themes/vue.css">
+  <!-- Catppuccin 配色（鎖定 commit 628ff26）：系統淺色用 Latte，深色用 Mocha -->
+  <link rel="stylesheet" media="(prefers-color-scheme: light)" href="https://cdn.jsdelivr.net/gh/catppuccin/docsify@628ff26/themes/latte/mauve.css">
+  <link rel="stylesheet" media="(prefers-color-scheme: dark)" href="https://cdn.jsdelivr.net/gh/catppuccin/docsify@628ff26/themes/mocha/mauve.css">
   <style>
     /* 字級加大 */
     body { font-size: 18px; }
@@ -14,8 +17,10 @@
     .sidebar ul li a { font-size: 17px; }
     .app-name-link { font-size: 24px; }
     .search input { font-size: 16px; }
+    /* Catppuccin 給 ☰ 按鈕的底色在 vue 版面會拉成長條，改為透明 */
+    .sidebar-toggle-button { background-color: transparent !important; }
     /* 左側目錄下方更新時間 */
-    .sidebar-updated { margin: 1.2em 0 0; padding: 0.8em 15px 0; border-top: 1px solid #eee; color: #888; font-size: 15px; }
+    .sidebar-updated { margin: 1.2em 0 0; padding: 0.8em 15px 0; border-top: 1px solid var(--surface1); color: var(--overlay1); font-size: 15px; }
   </style>
 </head>
 <body>
