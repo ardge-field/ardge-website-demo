@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ARDGE Demo Sites</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4.13.1/lib/themes/vue.css">
+  <style>
+    /* 字級加大 */
+    body { font-size: 18px; }
+    .markdown-section { font-size: 18px; }
+    .markdown-section h1 { font-size: 36px; }
+    .markdown-section h2 { font-size: 28px; }
+    .sidebar ul li a { font-size: 17px; }
+    .app-name-link { font-size: 24px; }
+    .search input { font-size: 16px; }
+    /* 頁尾更新時間 */
+    .page-updated { margin-top: 3em; padding-top: 1em; border-top: 1px solid #eee; color: #888; font-size: 15px; }
+  </style>
 </head>
 <body>
   <div id="app">載入中…</div>
@@ -16,11 +28,19 @@
       subMaxLevel: 0,
       auto2top: true,
       externalLinkTarget: '_blank',
+      formatUpdated: '{YYYY}-{MM}-{DD} {HH}:{mm}',
       search: {
         placeholder: '搜尋',
         noData: '找不到結果',
         depth: 2
-      }
+      },
+      plugins: [
+        function (hook) {
+          hook.beforeEach(function (content) {
+            return content + '\n\n<div class="page-updated">最後更新：{docsify-updated}</div>\n';
+          });
+        }
+      ]
     };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/docsify@4.13.1/lib/docsify.min.js"></script>
