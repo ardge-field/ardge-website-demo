@@ -65,7 +65,7 @@
           '<div class="passcode-title">ARDGE Demo Sites</div>' +
           '<label class="passcode-label" for="passcode-input">請輸入驗證碼</label>' +
           '<input id="passcode-input" class="passcode-input" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="one-time-code" required>' +
-          '<button type="submit" class="passcode-btn">進入</button>' +
+          '<button type="submit" class="passcode-btn">登入</button>' +
           '<div class="passcode-error" role="alert" hidden>驗證碼錯誤，請再試一次</div>' +
           '</form>';
         document.body.appendChild(gate);
@@ -117,10 +117,10 @@
     .search input { font-size: 16px; }
     /* Catppuccin 給 ☰ 按鈕的底色在 vue 版面會拉成長條，改為透明 */
     .sidebar-toggle-button { background-color: transparent !important; }
-    /* 左側目錄下方：更新日期與深淺色切換 */
+    /* 左側目錄下方：深淺色切換、登出、更新日期 */
     .sidebar-footer { margin: 1.2em 0 0; padding: 0.8em 15px 0; border-top: 1px solid var(--surface1); }
-    .sidebar-updated { color: var(--overlay1); font-size: 15px; }
-    .theme-switch { display: inline-flex; margin-top: 0.8em; border: 1px solid var(--surface1); border-radius: 6px; overflow: hidden; }
+    .sidebar-updated { margin-top: 0.8em; color: var(--overlay1); font-size: 15px; }
+    .theme-switch { display: inline-flex; border: 1px solid var(--surface1); border-radius: 6px; overflow: hidden; }
     .theme-switch button { padding: 4px 10px; border: 0; background: transparent; color: var(--subtext0); font: inherit; font-size: 14px; cursor: pointer; }
     .theme-switch button + button { border-left: 1px solid var(--surface1); }
     .theme-switch button:hover { color: var(--theme-color); }
@@ -146,7 +146,7 @@
       },
       plugins: [
         function (hook) {
-          // 左側目錄下方：更新日期（_sidebar.md 的 Last-Modified，即網站最後部署時間）、深淺色切換、登出
+          // 左側目錄下方：深淺色切換、登出、更新日期（_sidebar.md 的 Last-Modified，即網站最後部署時間）
           var updated = null;
           var pad = function (n) { return String(n).padStart(2, '0'); };
           var render = function () {
@@ -157,13 +157,13 @@
               footer = document.createElement('div');
               footer.className = 'sidebar-footer';
               footer.innerHTML =
-                '<div class="sidebar-updated"></div>' +
                 '<div class="theme-switch" role="group" aria-label="深淺色">' +
                 '<button type="button" data-pref="auto">💻 自動</button>' +
                 '<button type="button" data-pref="light">☀️ 淺色</button>' +
                 '<button type="button" data-pref="dark">🌙 深色</button>' +
                 '</div>' +
-                '<button type="button" class="logout-btn">🚪 登出</button>';
+                '<button type="button" class="logout-btn">🚪 登出</button>' +
+                '<div class="sidebar-updated"></div>';
               footer.querySelectorAll('.theme-switch button').forEach(function (b) {
                 b.addEventListener('click', function () { window.ardgeTheme.set(b.dataset.pref); });
               });
