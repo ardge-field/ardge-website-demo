@@ -9,6 +9,13 @@ ARDGE demo site 清單，使用 [Docsify](https://docsify.js.org/) 建置，透�
   - `docs/external.md` — 廠商測試機
   - `docs/support.md` — 技術資訊站
 
+## 驗證碼
+
+打開網站時需輸入 4 位數驗證碼：瀏覽者電腦當天日期的 `MMDD`（例如 10 月 12 日為 `1012`）。
+通過後記在瀏覽器工作階段 cookie，關閉瀏覽器後需重新輸入。
+
+> 僅用來擋一般外部訪客，並非安全機制：repo 為 public，內容檔可直接存取。
+
 ## 新增站台
 
 需改兩個地方：

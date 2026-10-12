@@ -39,10 +39,66 @@
       apply();
     })();
   </script>
+  <script>
+    // 驗證碼閘門：碼為瀏覽器本地時間的 MMDD（載入當下計算）。僅擋一般訪客，並非安全機制
+    // 通過後寫入工作階段 cookie（不設到期），關閉瀏覽器後需重新輸入
+    (function () {
+      var COOKIE = 'ardge_pass';
+      var path = location.pathname.replace(/[^/]*$/, '');
+      var now = new Date();
+      var code = String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0');
+      var root = document.documentElement;
+      if (document.cookie.split('; ').indexOf(COOKIE + '=1') !== -1) return;
+      root.classList.add('locked');
+      document.addEventListener('DOMContentLoaded', function () {
+        var gate = document.createElement('div');
+        gate.className = 'passcode-gate';
+        gate.innerHTML =
+          '<form class="passcode-box" autocomplete="off">' +
+          '<div class="passcode-title">ARDGE Demo Sites</div>' +
+          '<label class="passcode-label" for="passcode-input">請輸入 4 位數驗證碼</label>' +
+          '<input id="passcode-input" class="passcode-input" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" required>' +
+          '<button type="submit" class="passcode-btn">進入</button>' +
+          '<div class="passcode-error" role="alert" hidden>驗證碼錯誤，請再試一次</div>' +
+          '</form>';
+        document.body.appendChild(gate);
+        var form = gate.querySelector('form');
+        var input = gate.querySelector('input');
+        var error = gate.querySelector('.passcode-error');
+        input.addEventListener('input', function () {
+          input.value = input.value.replace(/\D/g, '').slice(0, 4);
+          error.hidden = true;
+        });
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          if (input.value === code) {
+            document.cookie = COOKIE + '=1; path=' + path + '; SameSite=Lax' + (location.protocol === 'https:' ? '; Secure' : '');
+            root.classList.remove('locked');
+            gate.remove();
+          } else {
+            error.hidden = false;
+            input.value = '';
+            input.focus();
+          }
+        });
+        input.focus();
+      });
+    })();
+  </script>
   <style>
     /* 哆啦A夢藍：深色用原色 #0096E0；淺色用深一階 #0072B8（對比約 4.5:1） */
     :root[data-theme="light"] { --theme-color: #0072B8 !important; }
     :root[data-theme="dark"]  { --theme-color: #0096E0 !important; }
+    /* 驗證碼閘門：未通過前隱藏網站內容 */
+    html.locked body > :not(.passcode-gate) { visibility: hidden !important; }
+    .passcode-gate { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 16px; background: var(--base); }
+    .passcode-box { display: flex; flex-direction: column; align-items: center; gap: 14px; width: 100%; max-width: 340px; padding: 32px 24px; border: 1px solid var(--surface1); border-radius: 12px; background: var(--mantle); }
+    .passcode-title { font-size: 26px; font-weight: 700; color: var(--theme-color); }
+    .passcode-label { font-size: 17px; color: var(--subtext1); }
+    .passcode-input { width: 9em; padding: 8px 12px; border: 1px solid var(--surface2); border-radius: 8px; background: var(--base); color: var(--text); font: inherit; font-size: 28px; letter-spacing: 0.4em; text-align: center; outline: none; }
+    .passcode-input:focus { border-color: var(--theme-color); }
+    .passcode-btn { width: 9em; padding: 8px 0; border: 0; border-radius: 8px; background: var(--theme-color); color: var(--base); font: inherit; font-size: 17px; font-weight: 700; cursor: pointer; }
+    .passcode-error { color: var(--red); font-size: 15px; }
     /* 字級加大 */
     body { font-size: 18px; }
     .markdown-section { font-size: 18px; }
