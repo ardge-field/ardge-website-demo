@@ -41,13 +41,20 @@
   </script>
   <script>
     // 驗證碼閘門：碼為瀏覽器本地時間的 MMDD（載入當下計算）。僅擋一般訪客，並非安全機制
-    // 通過後寫入工作階段 cookie（不設到期），關閉瀏覽器後需重新輸入
+    // 通過後寫入工作階段 cookie（不設到期），關閉瀏覽器或按「登出」後需重新輸入
     (function () {
       var COOKIE = 'ardge_pass';
       var path = location.pathname.replace(/[^/]*$/, '');
+      var secure = location.protocol === 'https:' ? '; Secure' : '';
       var now = new Date();
       var code = String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0');
       var root = document.documentElement;
+      window.ardgeGate = {
+        logout: function () {
+          document.cookie = COOKIE + '=; path=' + path + '; Max-Age=0; SameSite=Lax' + secure;
+          location.reload();
+        }
+      };
       if (document.cookie.split('; ').indexOf(COOKIE + '=1') !== -1) return;
       root.classList.add('locked');
       document.addEventListener('DOMContentLoaded', function () {
@@ -56,8 +63,8 @@
         gate.innerHTML =
           '<form class="passcode-box" autocomplete="off">' +
           '<div class="passcode-title">ARDGE Demo Sites</div>' +
-          '<label class="passcode-label" for="passcode-input">請輸入 4 位數驗證碼</label>' +
-          '<input id="passcode-input" class="passcode-input" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" required>' +
+          '<label class="passcode-label" for="passcode-input">請輸入驗證碼</label>' +
+          '<input id="passcode-input" class="passcode-input" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="one-time-code" required>' +
           '<button type="submit" class="passcode-btn">進入</button>' +
           '<div class="passcode-error" role="alert" hidden>驗證碼錯誤，請再試一次</div>' +
           '</form>';
@@ -72,7 +79,7 @@
         form.addEventListener('submit', function (e) {
           e.preventDefault();
           if (input.value === code) {
-            document.cookie = COOKIE + '=1; path=' + path + '; SameSite=Lax' + (location.protocol === 'https:' ? '; Secure' : '');
+            document.cookie = COOKIE + '=1; path=' + path + '; SameSite=Lax' + secure;
             root.classList.remove('locked');
             gate.remove();
           } else {
@@ -118,6 +125,8 @@
     .theme-switch button + button { border-left: 1px solid var(--surface1); }
     .theme-switch button:hover { color: var(--theme-color); }
     .theme-switch button[aria-pressed="true"] { background: var(--theme-color); color: var(--base); font-weight: 700; }
+    .logout-btn { display: block; margin-top: 0.8em; padding: 4px 10px; border: 1px solid var(--surface1); border-radius: 6px; background: transparent; color: var(--subtext0); font: inherit; font-size: 14px; cursor: pointer; }
+    .logout-btn:hover { color: var(--theme-color); border-color: var(--theme-color); }
   </style>
 </head>
 <body>
@@ -137,7 +146,7 @@
       },
       plugins: [
         function (hook) {
-          // 左側目錄下方：更新日期（_sidebar.md 的 Last-Modified，即網站最後部署時間）與深淺色切換
+          // 左側目錄下方：更新日期（_sidebar.md 的 Last-Modified，即網站最後部署時間）、深淺色切換、登出
           var updated = null;
           var pad = function (n) { return String(n).padStart(2, '0'); };
           var render = function () {
@@ -153,10 +162,12 @@
                 '<button type="button" data-pref="auto">💻 自動</button>' +
                 '<button type="button" data-pref="light">☀️ 淺色</button>' +
                 '<button type="button" data-pref="dark">🌙 深色</button>' +
-                '</div>';
+                '</div>' +
+                '<button type="button" class="logout-btn">🚪 登出</button>';
               footer.querySelectorAll('.theme-switch button').forEach(function (b) {
                 b.addEventListener('click', function () { window.ardgeTheme.set(b.dataset.pref); });
               });
+              footer.querySelector('.logout-btn').addEventListener('click', function () { window.ardgeGate.logout(); });
               nav.appendChild(footer);
               window.ardgeTheme.apply();
             }
