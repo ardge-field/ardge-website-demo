@@ -25,14 +25,14 @@ ARDGE demo site 清單，使用 [Docsify](https://docsify.js.org/) 建置，透�
    ```markdown
    ## 站台名稱
 
-   - **\[WAN1\]【優先】**
-     - \[Desktop\] https://example.com/
-   - \[WAN2\] https://example.com/
+   - **【WAN1】【優先】**
+     - 【Desktop】 https://example.com/
+   - 【WAN2】 https://example.com/
    - 說明：
      - 用途：…
    ```
 
-   標籤的中括號要加 `\` 跳脫，否則 `[WAN1][優先]` 會被當成連結語法。
+   標籤一律用全形括號【】。
 
 2. 在 `docs/_sidebar.md` 該分類下加一行（`id` 為標題轉小寫、去掉 `#` 等符號、空白換成 `-`，例如 `DEMO #1` → `demo-1`）：
 
