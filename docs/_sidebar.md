@@ -2,6 +2,8 @@
 - [業務展示用](internal.md)
   - [DEMO #1](internal.md?id=demo-1)
   - [DEMO #2](internal.md?id=demo-2)
+  - [ARX-LAW 助手](internal.md?id=arx-law-助手)
+  - [HPE 助手](internal.md?id=hpe-助手)
 - [廠商測試機](external.md)
   - [DEMO #61](external.md?id=demo-61)
   - [DEMO #63](external.md?id=demo-63)

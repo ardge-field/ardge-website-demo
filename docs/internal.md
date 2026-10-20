@@ -31,3 +31,13 @@
 - 說明：
   - 優先用途：僅供業務人員操作展示/開放外部用戶操作使用
   - **特別注意：供外部用戶使用之帳號需設定使用期限**
+
+## ARX-LAW 助手
+
+- 【WAN1】 https://search-demo.demo235-1.ardge.ai/
+- 【WAN2】 https://search-demo.demo235-2.ardge.ai/
+
+## HPE 助手
+
+- 【WAN1】 https://hpe-demo.demo210-1.ardge.ai/
+- 【WAN2】 https://hpe-demo.demo210-2.ardge.ai/
