@@ -1,15 +1,9 @@
 # 技術資訊站
 
-## 範例站台 SUP-1
+## 產品指南
 
-- URL：https://demo-sup-1.example.com
-- 說明：
-  - 附註說明一
-  - 附註說明二
+- https://docs.ardge.com/zh-tw/guide/start-here/overview
 
-## 範例站台 SUP-2
+## 開發指南
 
-- URL：https://demo-sup-2.example.com
-- 說明：
-  - 附註說明一
-  - 附註說明二
+- https://developer.ardge.com/zh-tw/guide/overview

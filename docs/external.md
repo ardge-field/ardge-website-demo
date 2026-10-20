@@ -1,15 +1,29 @@
 # 廠商測試機
 
-## 範例站台 EXT-1
+## demo61
 
-- URL：https://demo-ext-1.example.com
+- **\[DMZ\]**
+  - \[Desktop\] https://desktop.demo61-2.ardge.ai/
+  - \[Armor\] https://armor.demo61-2.ardge.ai/
+  - \[PreciseMD\] https://precisemd.demo61-2.ardge.ai/
 - 說明：
-  - 附註說明一
-  - 附註說明二
+  - 用途：廠商開發用
 
-## 範例站台 EXT-2
+## demo63
 
-- URL：https://demo-ext-2.example.com
 - 說明：
-  - 附註說明一
-  - 附註說明二
+  - 用途：設備借出/廠商開發用
+
+## demo66
+
+- **\[DMZ\]**
+  - \[Desktop\] https://desktop.demo66-2.ardge.ai/
+  - \[ARGENT\] https://argent.demo66-2.ardge.ai/
+  - \[ARGENT Dev\] https://argentdev.demo66-2.ardge.ai/
+- 說明：
+  - 用途：廠商測試用
+
+## demo67
+
+- 說明：
+  - 用途：設備借出/廠商開發用、廠商展演用

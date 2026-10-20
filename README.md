@@ -14,7 +14,7 @@ ARDGE demo site 清單，使用 [Docsify](https://docsify.js.org/) 建置，透�
 打開網站時需輸入 4 位數驗證碼：瀏覽者電腦當天日期的 `MMDD`（例如 10 月 12 日為 `1012`）。
 輸入時以圓點遮罩。通過後記在瀏覽器工作階段 cookie，關閉瀏覽器或按左側目錄下方的「🚪 登出」後需重新輸入。
 
-> 僅用來擋一般外部訪客，並非安全機制：repo 為 public，內容檔可直接存取。
+> 僅用來擋一般外部訪客，並非安全機制：repo 為 public，內容檔可直接存取。不要放內網 IP、內網 URL、帳號或密碼。
 
 ## 新增站台
 
@@ -25,13 +25,16 @@ ARDGE demo site 清單，使用 [Docsify](https://docsify.js.org/) 建置，透�
    ```markdown
    ## 站台名稱
 
-   - URL：https://example.com
+   - **\[WAN1\]【優先】**
+     - \[Desktop\] https://example.com/
+   - \[WAN2\] https://example.com/
    - 說明：
-     - 附註一
-     - 附註二
+     - 用途：…
    ```
 
-2. 在 `docs/_sidebar.md` 該分類下加一行（`id` 為標題轉小寫、空白換成 `-`）：
+   標籤的中括號要加 `\` 跳脫，否則 `[WAN1][優先]` 會被當成連結語法。
+
+2. 在 `docs/_sidebar.md` 該分類下加一行（`id` 為標題轉小寫、去掉 `#` 等符號、空白換成 `-`，例如 `DEMO #1` → `demo-1`）：
 
    ```markdown
      - [站台名稱](internal.md?id=站台名稱)
