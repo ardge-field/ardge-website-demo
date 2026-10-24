@@ -8,6 +8,7 @@ ARDGE demo site 清單，使用 [Docsify](https://docsify.js.org/) 建置，透�
   - `docs/internal.md` — 業務展示用
   - `docs/external.md` — 廠商測試機
   - `docs/support.md` — 技術資訊站
+- 分頁圖示：`docs/favicon.ico`（16/32/48/64/128/256 px，哆啦A夢藍圓角方塊＋白色 A）
 
 ## 驗證碼
 

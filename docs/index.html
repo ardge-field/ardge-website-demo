@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ARDGE Demo Sites</title>
-  <!-- 分頁圖示：內嵌 SVG（哆啦A夢藍圓角方塊＋白色 A），瀏覽器就不會去網域根目錄找 favicon.ico -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230096E0'/><text x='32' y='46' font-family='Arial,sans-serif' font-size='40' font-weight='700' fill='white' text-anchor='middle'>A</text></svg>">
+  <!-- 分頁圖示：docs/favicon.ico（哆啦A夢藍圓角方塊＋白色 A，16/32/48/64/128/256 px）；明確指定路徑，瀏覽器就不會去網域根目錄找 -->
+  <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4.13.1/lib/themes/vue.css">
   <!-- Catppuccin 配色（鎖定 commit 628ff26）：淺色用 Latte，深色用 Mocha；強調色另以哆啦A夢藍覆寫 -->
   <link id="ctp-light" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/catppuccin/docsify@628ff26/themes/latte/blue.css">
