@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ARDGE Demo Sites</title>
+  <!-- 分頁圖示：內嵌 SVG（哆啦A夢藍圓角方塊＋白色 A），瀏覽器就不會去網域根目錄找 favicon.ico -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230096E0'/><text x='32' y='46' font-family='Arial,sans-serif' font-size='40' font-weight='700' fill='white' text-anchor='middle'>A</text></svg>">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4.13.1/lib/themes/vue.css">
   <!-- Catppuccin 配色（鎖定 commit 628ff26）：淺色用 Latte，深色用 Mocha；強調色另以哆啦A夢藍覆寫 -->
   <link id="ctp-light" rel="stylesheet" href="https://cdn.jsdelivr.net/gh/catppuccin/docsify@628ff26/themes/latte/blue.css">
@@ -49,7 +51,15 @@
       var now = new Date();
       var code = String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0');
       var root = document.documentElement;
+      var NAME = 'ARDGE Demo Sites';
       window.ardgeGate = {
+        // Docsify 以目錄連結的 innerText 組標題；閘門鎖住時目錄隱藏、innerText 為空，會變成「 - ARDGE Demo Sites」
+        // unlocked 為 true 表示剛登入：Docsify 不會重設標題，直接改用目前目錄連結的文字
+        fixTitle: function (unlocked) {
+          if (root.classList.contains('locked')) { document.title = NAME; return; }
+          var a = document.querySelector('.sidebar-nav li.active > a');
+          if (a && (unlocked || /^\s*-/.test(document.title))) document.title = a.textContent.trim() || NAME;
+        },
         logout: function () {
           document.cookie = COOKIE + '=; path=' + path + '; Max-Age=0; SameSite=Lax' + secure;
           location.reload();
@@ -82,6 +92,7 @@
             document.cookie = COOKIE + '=1; path=' + path + '; SameSite=Lax' + secure;
             root.classList.remove('locked');
             gate.remove();
+            window.ardgeGate.fixTitle(true);
           } else {
             error.hidden = false;
             input.value = '';
@@ -184,7 +195,10 @@
               render();
             });
           });
-          hook.doneEach(render);
+          hook.doneEach(function () {
+            render();
+            window.ardgeGate.fixTitle();
+          });
         }
       ]
     };
